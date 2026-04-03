@@ -1,5 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/:value(\\d{1,4})",
+      "destination": "/api/n?value=:value"
+    }
+  ],
   "cleanUrls": true,
   "trailingSlash": false
 }

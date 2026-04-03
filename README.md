@@ -4,7 +4,9 @@
 
 ## Endpoint
 
-`GET /api/cistercian?value=1987`
+`GET /1987`
+
+内部的には `/api/n?value=1987` へ rewrite されます。
 
 追加オプション:
 
@@ -21,8 +23,10 @@
 
 ```bash
 npm install
-npm run dev
+npm run vercel:dev
 ```
+
+`dev` script に `vercel dev` を置くと再帰するので、ローカル起動は `npm run vercel:dev` を使います。
 
 ## Deploy
 
@@ -39,7 +43,7 @@ GitHub リポジトリを Vercel に import しても動きます。初回はプ
 ## Example
 
 ```html
-<img src="/api/cistercian?value=1987" alt="1987" />
+<img src="/1987" alt="1987" />
 ```
 
 ## Demo
