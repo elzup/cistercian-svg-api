@@ -70,8 +70,8 @@
 
       h1 {
         margin: 0 0 10px;
-        font-size: clamp(2.4rem, 6vw, 4.8rem);
-        line-height: 0.95;
+        font-size: clamp(2rem, 4.8vw, 3.6rem);
+        line-height: 1;
         letter-spacing: -0.04em;
       }
 
@@ -198,6 +198,35 @@
         background: rgba(255, 255, 255, 0.7);
       }
 
+      .sample-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .sample-card {
+        padding: 14px 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.68);
+        text-align: center;
+      }
+
+      .sample-card img {
+        width: 100%;
+        max-width: 82px;
+        height: 124px;
+        object-fit: contain;
+      }
+
+      .sample-card code {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
       @media (max-width: 760px) {
         main {
           padding-top: 28px;
@@ -209,6 +238,10 @@
 
         .preview {
           min-height: 300px;
+        }
+
+        .sample-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
     </style>
@@ -245,7 +278,7 @@
 
           <div>
             <label for="stroke" data-i18n="strokeLabel">Stroke</label>
-            <input id="stroke" name="stroke" inputmode="numeric" value="8" />
+            <input id="stroke" name="stroke" inputmode="numeric" value="6" />
           </div>
 
           <div>
@@ -256,7 +289,7 @@
           <div class="meta">
             <div>
               <label data-i18n="apiUrlLabel">API URL</label>
-              <a id="api-link" href="/api/cistercian?value=1987">/api/cistercian?value=1987</a>
+              <a id="api-link" href="/1987">/1987</a>
             </div>
             <div>
               <label data-i18n="normalizedLabel">Normalized</label>
@@ -268,18 +301,44 @@
 
         <div class="panel">
           <div class="preview">
-            <img id="preview" src="/api/cistercian?value=1987&size=256" alt="Cistercian numeral preview" />
+            <img id="preview" src="/1987?size=256&stroke=6" alt="Cistercian numeral preview" />
           </div>
 
           <section class="examples">
-            <h2 data-i18n="examplesTitle">Compare nearby values</h2>
+            <h2 data-i18n="examplesTitle">Sample values</h2>
             <div class="example-links">
-              <a href="#value=6060">6060</a>
-              <a href="#value=6080">6080</a>
+              <a href="#value=0123">0123</a>
+              <a href="#value=4567">4567</a>
+              <a href="#value=8901">8901</a>
               <a href="#value=0007">0007</a>
-              <a href="#value=0100">0100</a>
               <a href="#value=1987">1987</a>
               <a href="#value=9999">9999</a>
+            </div>
+            <div class="sample-grid">
+              <a class="sample-card" href="#value=0123">
+                <img src="/0123?size=160&stroke=6" alt="0123" />
+                <code>0123</code>
+              </a>
+              <a class="sample-card" href="#value=4567">
+                <img src="/4567?size=160&stroke=6" alt="4567" />
+                <code>4567</code>
+              </a>
+              <a class="sample-card" href="#value=8901">
+                <img src="/8901?size=160&stroke=6" alt="8901" />
+                <code>8901</code>
+              </a>
+              <a class="sample-card" href="#value=0007">
+                <img src="/0007?size=160&stroke=6" alt="0007" />
+                <code>0007</code>
+              </a>
+              <a class="sample-card" href="#value=1987">
+                <img src="/1987?size=160&stroke=6" alt="1987" />
+                <code>1987</code>
+              </a>
+              <a class="sample-card" href="#value=9999">
+                <img src="/9999?size=160&stroke=6" alt="9999" />
+                <code>9999</code>
+              </a>
             </div>
           </section>
         </div>
@@ -304,7 +363,7 @@
           sizeLabel: "Size",
           apiUrlLabel: "API URL",
           normalizedLabel: "Normalized",
-          examplesTitle: "見分けづらい値を比較",
+          examplesTitle: "サンプル",
           inputError: "value は 1 桁以上 4 桁以下の数字で入力してください。",
         },
         en: {
@@ -317,7 +376,7 @@
           sizeLabel: "Size",
           apiUrlLabel: "API URL",
           normalizedLabel: "Normalized",
-          examplesTitle: "Compare similar values",
+          examplesTitle: "Samples",
           inputError: "Enter 1 to 4 numeric digits for value.",
         },
       };
@@ -359,7 +418,12 @@
           size,
         });
 
-        const url = `/api/cistercian?${params.toString()}`;
+        const query = new URLSearchParams({
+          color,
+          stroke,
+          size,
+        });
+        const url = `/${encodeURIComponent(value)}?${query.toString()}`;
         preview.src = url;
         apiLink.href = url;
         apiLink.textContent = url;
