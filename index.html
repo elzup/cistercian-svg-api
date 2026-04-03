@@ -38,6 +38,36 @@
         margin-bottom: 28px;
       }
 
+      .topbar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 18px;
+      }
+
+      .locale-switch {
+        display: inline-flex;
+        gap: 6px;
+        padding: 4px;
+        border: 1px solid rgba(139, 94, 52, 0.14);
+        border-radius: 999px;
+        background: rgba(255, 252, 246, 0.7);
+      }
+
+      .locale-switch button {
+        border: 0;
+        border-radius: 999px;
+        padding: 8px 12px;
+        font: inherit;
+        color: var(--muted);
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .locale-switch button[aria-pressed="true"] {
+        color: var(--ink);
+        background: rgba(139, 94, 52, 0.14);
+      }
+
       h1 {
         margin: 0 0 10px;
         font-size: clamp(2.4rem, 6vw, 4.8rem);
@@ -120,7 +150,8 @@
 
       .preview img {
         width: min(100%, 320px);
-        aspect-ratio: 1;
+        max-height: 360px;
+        object-fit: contain;
         filter: drop-shadow(0 18px 32px rgba(29, 27, 24, 0.12));
       }
 
@@ -143,6 +174,30 @@
         font-size: 0.92rem;
       }
 
+      .examples {
+        margin-top: 20px;
+      }
+
+      .examples h2 {
+        margin: 0 0 12px;
+        font-size: 1rem;
+      }
+
+      .example-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .example-links a {
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--accent);
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.7);
+      }
+
       @media (max-width: 760px) {
         main {
           padding-top: 28px;
@@ -160,9 +215,16 @@
   </head>
   <body>
     <main>
+      <div class="topbar">
+        <div class="locale-switch" role="group" aria-label="Language switcher">
+          <button type="button" data-locale="ja" aria-pressed="false">JA</button>
+          <button type="button" data-locale="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+
       <section class="hero">
-        <h1>Cistercian SVG API</h1>
-        <p class="lede">
+        <h1 data-i18n="title">Cistercian SVG API</h1>
+        <p class="lede" data-i18n="lede">
           `0..9999` の整数から、シトー修道士数字の SVG を返す小さな API のデモです。
           0埋め入力もそのまま試せます。
         </p>
@@ -171,33 +233,33 @@
       <section class="layout">
         <form class="panel controls" id="controls">
           <div>
-            <label for="value">Value</label>
+            <label for="value" data-i18n="valueLabel">Value</label>
             <input id="value" name="value" inputmode="numeric" value="1987" maxlength="4" />
-            <p class="hint">`7`, `007`, `1987` のように入力できます。</p>
+            <p class="hint" data-i18n="valueHint">`7`, `007`, `1987` のように入力できます。</p>
           </div>
 
           <div>
-            <label for="color">Color</label>
+            <label for="color" data-i18n="colorLabel">Color</label>
             <input id="color" name="color" value="#1d1b18" />
           </div>
 
           <div>
-            <label for="stroke">Stroke</label>
+            <label for="stroke" data-i18n="strokeLabel">Stroke</label>
             <input id="stroke" name="stroke" inputmode="numeric" value="8" />
           </div>
 
           <div>
-            <label for="size">Size</label>
+            <label for="size" data-i18n="sizeLabel">Size</label>
             <input id="size" name="size" inputmode="numeric" value="256" />
           </div>
 
           <div class="meta">
             <div>
-              <label>API URL</label>
+              <label data-i18n="apiUrlLabel">API URL</label>
               <a id="api-link" href="/api/cistercian?value=1987">/api/cistercian?value=1987</a>
             </div>
             <div>
-              <label>Normalized</label>
+              <label data-i18n="normalizedLabel">Normalized</label>
               <code id="normalized-value">1987</code>
             </div>
             <div class="error" id="error"></div>
@@ -208,6 +270,18 @@
           <div class="preview">
             <img id="preview" src="/api/cistercian?value=1987&size=256" alt="Cistercian numeral preview" />
           </div>
+
+          <section class="examples">
+            <h2 data-i18n="examplesTitle">Compare nearby values</h2>
+            <div class="example-links">
+              <a href="#value=6060">6060</a>
+              <a href="#value=6080">6080</a>
+              <a href="#value=0007">0007</a>
+              <a href="#value=0100">0100</a>
+              <a href="#value=1987">1987</a>
+              <a href="#value=9999">9999</a>
+            </div>
+          </section>
         </div>
       </section>
     </main>
@@ -218,6 +292,49 @@
       const apiLink = document.getElementById("api-link");
       const normalizedValue = document.getElementById("normalized-value");
       const error = document.getElementById("error");
+      const localeButtons = Array.from(document.querySelectorAll("[data-locale]"));
+      const messages = {
+        ja: {
+          title: "Cistercian SVG API",
+          lede: "`0..9999` の整数から、シトー修道士数字の SVG を返す小さな API のデモです。0埋め入力もそのまま試せます。",
+          valueLabel: "Value",
+          valueHint: "`7`, `007`, `1987` のように入力できます。",
+          colorLabel: "Color",
+          strokeLabel: "Stroke",
+          sizeLabel: "Size",
+          apiUrlLabel: "API URL",
+          normalizedLabel: "Normalized",
+          examplesTitle: "見分けづらい値を比較",
+          inputError: "value は 1 桁以上 4 桁以下の数字で入力してください。",
+        },
+        en: {
+          title: "Cistercian SVG API",
+          lede: "A small demo for an API that returns Cistercian numeral SVGs from integers in `0..9999`. Zero-padded input works as-is.",
+          valueLabel: "Value",
+          valueHint: "Try values like `7`, `007`, or `1987`.",
+          colorLabel: "Color",
+          strokeLabel: "Stroke",
+          sizeLabel: "Size",
+          apiUrlLabel: "API URL",
+          normalizedLabel: "Normalized",
+          examplesTitle: "Compare similar values",
+          inputError: "Enter 1 to 4 numeric digits for value.",
+        },
+      };
+      let locale = "ja";
+
+      function applyLocale(nextLocale) {
+        locale = messages[nextLocale] ? nextLocale : "ja";
+        document.documentElement.lang = locale;
+
+        document.querySelectorAll("[data-i18n]").forEach((node) => {
+          node.textContent = messages[locale][node.dataset.i18n];
+        });
+
+        localeButtons.forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.locale === locale));
+        });
+      }
 
       function updatePreview() {
         const value = form.value.value.trim();
@@ -226,7 +343,7 @@
         const size = form.size.value.trim();
 
         if (!/^\d{1,4}$/.test(value)) {
-          error.textContent = "value は 1 桁以上 4 桁以下の数字で入力してください。";
+          error.textContent = messages[locale].inputError;
           return;
         }
 
@@ -248,7 +365,29 @@
         apiLink.textContent = url;
       }
 
+      function applyHashValue() {
+        const hash = new URLSearchParams(location.hash.slice(1));
+        const value = hash.get("value");
+
+        if (value && /^\d{1,4}$/.test(value)) {
+          form.value.value = value;
+        }
+      }
+
       form.addEventListener("input", updatePreview);
+      localeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          applyLocale(button.dataset.locale);
+          updatePreview();
+        });
+      });
+      window.addEventListener("hashchange", () => {
+        applyHashValue();
+        updatePreview();
+      });
+
+      applyLocale(navigator.language.toLowerCase().startsWith("ja") ? "ja" : "en");
+      applyHashValue();
       updatePreview();
     </script>
   </body>

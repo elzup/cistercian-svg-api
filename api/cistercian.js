@@ -24,6 +24,7 @@ module.exports = function handler(req, res) {
   }
 
   const svg = renderCistercianSvg(value, {
+    cap: req.query.cap,
     color: req.query.color,
     stroke: req.query.stroke,
     size: req.query.size,
