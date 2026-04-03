@@ -1,0 +1,10 @@
+{
+  "name": "cistercian-svg-api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx vercel dev",
+    "deploy": "npx vercel",
+    "deploy:prod": "npx vercel --prod"
+  }
+}
