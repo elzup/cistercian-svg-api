@@ -1,5 +1,7 @@
 # Cistercian SVG API
 
+![Cistercian SVG API logo](./logo.svg)
+
 `0..9999` の整数を受け取り、シトー修道士数字の SVG を返す API です。
 
 ## Endpoint
