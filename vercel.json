@@ -2,6 +2,14 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
+      "source": "/:value(\\d{1,4})/ogp",
+      "destination": "/api/ogp?value=:value&type=screen"
+    },
+    {
+      "source": "/:value(\\d{1,4})/logo",
+      "destination": "/api/ogp?value=:value&type=logo"
+    },
+    {
       "source": "/:value(\\d{1,4})",
       "destination": "/api/n?value=:value"
     }
