@@ -4,6 +4,8 @@
 
 `0..9999` の整数を受け取り、シトー修道士数字の SVG を返す API です。
 
+SVG API とは別に、同じ glyph コアからフォント生成もできます。
+
 ## Endpoint
 
 `GET /1987`
@@ -29,6 +31,33 @@ npm run vercel:dev
 ```
 
 `dev` script に `vercel dev` を置くと再帰するので、ローカル起動は `npm run vercel:dev` を使います。
+
+## Font Build
+
+SVG API とは別用途で、`0..9999` の glyph を Private Use Area に割り当てた font も生成できます。
+
+```bash
+npm install
+npm run build:font
+```
+
+生成物:
+
+- `dist/font/Cistercian.ttf`
+- `dist/font/Cistercian.woff`
+- `dist/font/Cistercian.woff2`
+- `dist/font/Cistercian.css`
+- `dist/font/manifest.json`
+- `dist/font/demo.html`
+
+`manifest.json` には `1987 -> U+...` の対応表が入ります。HTML ではアラビア数字の `"1987"` にそのまま font を当てるのではなく、対応するコードポイント文字を出して `font-family` を適用します。
+
+```html
+<link rel="stylesheet" href="/fonts/Cistercian.css" />
+<span class="cistercian">&#xF07C3;</span>
+```
+
+値ごとのコードポイントは `dist/font/manifest.json` を参照してください。
 
 ## Deploy
 

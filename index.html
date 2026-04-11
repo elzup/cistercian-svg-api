@@ -206,6 +206,83 @@
         font-weight: 600;
       }
 
+      .font-demo {
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .font-demo p {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: 0.94rem;
+      }
+
+      .font-demo-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 124px) minmax(0, 1fr);
+        gap: 14px;
+        align-items: center;
+      }
+
+      .font-glyph {
+        display: grid;
+        place-items: center;
+        min-height: 132px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.82);
+        font-family: "Cistercian", var(--font-display);
+        font-size: 84px;
+        line-height: 1;
+      }
+
+      .font-meta {
+        display: grid;
+        gap: 10px;
+      }
+
+      .font-meta-row {
+        display: grid;
+        gap: 4px;
+      }
+
+      .font-meta-row label {
+        margin: 0;
+      }
+
+      .font-inline-preview {
+        margin-top: 14px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .font-inline-preview p {
+        margin: 0;
+      }
+
+      .font-inline-preview p + p {
+        margin-top: 8px;
+      }
+
+      .font-inline {
+        font-family: "Cistercian", var(--font-display);
+        font-size: 1.15em;
+        vertical-align: -0.08em;
+      }
+
+      .font-snippet {
+        margin-top: 12px;
+        padding: 14px 16px;
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--accent);
+      }
+
       .example-links {
         display: flex;
         flex-wrap: wrap;
@@ -266,6 +343,19 @@
         .sample-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+
+        .font-demo-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+    <style>
+      @font-face {
+        font-family: "Cistercian";
+        src:
+          url("/dist/font/Cistercian.woff2") format("woff2"),
+          url("/dist/font/Cistercian.woff") format("woff");
+        font-display: block;
       }
     </style>
   </head>
@@ -380,6 +470,44 @@
               </a>
             </div>
           </section>
+
+          <section class="font-demo">
+            <h2 data-i18n="fontTitle">Font demo</h2>
+            <p data-i18n="fontLead">
+              build:font 後は、同じ値を 1 glyph として font でも使えます。
+            </p>
+            <div class="font-demo-grid">
+              <div class="font-glyph" id="font-glyph" aria-label="Font glyph">
+                󰞃
+              </div>
+              <div class="font-meta">
+                <div class="font-meta-row">
+                  <label data-i18n="fontCodepointLabel">Codepoint</label>
+                  <code id="font-codepoint">U+F07C3</code>
+                </div>
+                <div class="font-meta-row">
+                  <label data-i18n="fontEntityLabel">HTML entity</label>
+                  <code id="font-entity">&#xF07C3;</code>
+                </div>
+                <div class="font-meta-row">
+                  <label data-i18n="fontCssLabel">CSS</label>
+                  <code>.cistercian { font-family: "Cistercian"; }</code>
+                </div>
+              </div>
+            </div>
+            <div class="font-inline-preview">
+              <p id="font-inline-short">
+                Shelf <span class="font-inline">󰟃</span> north
+              </p>
+              <p id="font-inline-body">
+                Archive note <span class="font-inline">󰟃</span> was copied.
+              </p>
+            </div>
+            <pre class="font-snippet"><code id="font-html-snippet">&lt;span class="cistercian"&gt;&amp;#xF07C3;&lt;/span&gt;
+
+&lt;p&gt;Shelf &lt;span class="cistercian"&gt;&amp;#xF07C3;&lt;/span&gt; north&lt;/p&gt;
+&lt;p&gt;Archive note &lt;span class="cistercian"&gt;&amp;#xF07C3;&lt;/span&gt; was copied.&lt;/p&gt;</code></pre>
+          </section>
         </div>
       </section>
     </main>
@@ -405,6 +533,11 @@
           apiUrlLabel: "API URL",
           normalizedLabel: "Normalized",
           examplesTitle: "サンプル",
+          fontTitle: "Font Demo",
+          fontLead: "build:font 後は、同じ値を 1 glyph として font でも使えます。",
+          fontCodepointLabel: "Codepoint",
+          fontEntityLabel: "HTML entity",
+          fontCssLabel: "CSS",
           inputError: "value は 1 桁以上 4 桁以下の数字で入力してください。",
         },
         en: {
@@ -418,10 +551,33 @@
           apiUrlLabel: "API URL",
           normalizedLabel: "Normalized",
           examplesTitle: "Samples",
+          fontTitle: "Font demo",
+          fontLead: "After build:font, the same value is also available as one font glyph.",
+          fontCodepointLabel: "Codepoint",
+          fontEntityLabel: "HTML entity",
+          fontCssLabel: "CSS",
           inputError: "Enter 1 to 4 numeric digits for value.",
         },
       };
       let locale = "ja";
+      const fontGlyph = document.getElementById("font-glyph");
+      const fontCodepoint = document.getElementById("font-codepoint");
+      const fontEntity = document.getElementById("font-entity");
+      const fontInlineShort = document.getElementById("font-inline-short");
+      const fontInlineBody = document.getElementById("font-inline-body");
+      const fontHtmlSnippet = document.getElementById("font-html-snippet");
+
+      function valueToCodepoint(value) {
+        return 0xf0000 + Number.parseInt(value, 10);
+      }
+
+      function formatCodepoint(codepoint) {
+        return `U+${codepoint.toString(16).toUpperCase()}`;
+      }
+
+      function formatEntity(codepoint) {
+        return `&#x${codepoint.toString(16).toUpperCase()};`;
+      }
 
       function applyLocale(nextLocale) {
         locale = messages[nextLocale] ? nextLocale : "ja";
@@ -454,6 +610,18 @@
 
         const normalized = String(Number.parseInt(value, 10));
         normalizedValue.textContent = normalized.padStart(4, "0");
+        const codepoint = valueToCodepoint(value);
+        const glyph = String.fromCodePoint(codepoint);
+        const entity = formatEntity(codepoint);
+        fontGlyph.textContent = String.fromCodePoint(codepoint);
+        fontCodepoint.textContent = formatCodepoint(codepoint);
+        fontEntity.textContent = entity;
+        fontInlineShort.innerHTML = `Shelf <span class="font-inline">${glyph}</span> north`;
+        fontInlineBody.innerHTML = `Archive note <span class="font-inline">${glyph}</span> was copied.`;
+        fontHtmlSnippet.textContent =
+          `<span class="cistercian">${entity}</span>\n\n` +
+          `<p>Shelf <span class="cistercian">${entity}</span> north</p>\n` +
+          `<p>Archive note <span class="cistercian">${entity}</span> was copied.</p>`;
 
         const params = new URLSearchParams({
           value,
