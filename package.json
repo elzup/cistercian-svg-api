@@ -3,8 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build:font": "node scripts/build-font.js",
     "vercel:dev": "npx vercel dev",
     "deploy": "npx vercel",
     "deploy:prod": "npx vercel --prod"
+  },
+  "dependencies": {
+    "svg2ttf": "^6.0.3",
+    "svgicons2svgfont": "^15.0.1",
+    "ttf2woff": "^3.0.0",
+    "ttf2woff2": "^7.0.0"
   }
 }
