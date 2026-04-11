@@ -207,52 +207,61 @@
       }
 
       .font-demo {
-        margin-top: 18px;
-        padding-top: 18px;
-        border-top: 1px solid var(--line);
+        margin-top: 20px;
       }
 
-      .font-demo p {
-        margin: 0 0 10px;
-        color: var(--muted);
+      .font-demo h2 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+        font-family: var(--font-display);
+        font-weight: 600;
+      }
+
+      .font-demo .lede {
+        margin: 0 0 16px;
         font-size: 0.94rem;
       }
 
       .font-demo-grid {
         display: grid;
-        grid-template-columns: minmax(0, 124px) minmax(0, 1fr);
-        gap: 14px;
-        align-items: center;
+        grid-template-columns: 148px 1fr;
+        gap: 20px;
+        align-items: start;
       }
 
       .font-glyph {
         display: grid;
         place-items: center;
-        min-height: 132px;
+        aspect-ratio: 3 / 4;
         border: 1px solid var(--line);
         border-radius: 10px;
         background: rgba(255, 255, 255, 0.82);
         font-family: "Cistercian", var(--font-display);
-        font-size: 84px;
+        font-size: 96px;
         line-height: 1;
       }
 
       .font-meta {
         display: grid;
-        gap: 10px;
+        gap: 12px;
       }
 
       .font-meta-row {
         display: grid;
-        gap: 4px;
+        gap: 2px;
       }
 
       .font-meta-row label {
         margin: 0;
       }
 
+      .font-meta-row code {
+        font-size: 0.92rem;
+        word-break: break-all;
+      }
+
       .font-inline-preview {
-        margin-top: 14px;
+        margin-top: 16px;
         padding: 14px 16px;
         border: 1px solid var(--line);
         border-radius: 10px;
@@ -276,11 +285,14 @@
       .font-snippet {
         margin-top: 12px;
         padding: 14px 16px;
-        overflow: auto;
+        overflow-x: auto;
         border: 1px solid var(--line);
         border-radius: 10px;
         background: rgba(255, 255, 255, 0.72);
         color: var(--accent);
+        font-size: 0.85rem;
+        white-space: pre;
+        word-break: break-all;
       }
 
       .example-links {
@@ -345,7 +357,11 @@
         }
 
         .font-demo-grid {
-          grid-template-columns: 1fr;
+          grid-template-columns: 120px 1fr;
+        }
+
+        .font-glyph {
+          font-size: 72px;
         }
       }
     </style>
@@ -471,44 +487,45 @@
             </div>
           </section>
 
-          <section class="font-demo">
-            <h2 data-i18n="fontTitle">Font demo</h2>
-            <p data-i18n="fontLead">
-              build:font 後は、同じ値を 1 glyph として font でも使えます。
-            </p>
-            <div class="font-demo-grid">
-              <div class="font-glyph" id="font-glyph" aria-label="Font glyph">
-                󰞃
-              </div>
-              <div class="font-meta">
-                <div class="font-meta-row">
-                  <label data-i18n="fontCodepointLabel">Codepoint</label>
-                  <code id="font-codepoint">U+F07C3</code>
-                </div>
-                <div class="font-meta-row">
-                  <label data-i18n="fontEntityLabel">HTML entity</label>
-                  <code id="font-entity">&#xF07C3;</code>
-                </div>
-                <div class="font-meta-row">
-                  <label data-i18n="fontCssLabel">CSS</label>
-                  <code>.cistercian { font-family: "Cistercian"; }</code>
-                </div>
-              </div>
+        </div>
+      </section>
+
+      <section class="panel font-demo">
+        <h2 data-i18n="fontTitle">Font demo</h2>
+        <p class="lede" data-i18n="fontLead">
+          同じ数字を Web フォントの 1 文字としても使えます。テキストに混ぜて表示できます。
+        </p>
+        <div class="font-demo-grid">
+          <div class="font-glyph" id="font-glyph" aria-label="Font glyph">
+            󰞃
+          </div>
+          <div class="font-meta">
+            <div class="font-meta-row">
+              <label data-i18n="fontCodepointLabel">Codepoint</label>
+              <code id="font-codepoint">U+F1987</code>
             </div>
-            <div class="font-inline-preview">
-              <p id="font-inline-short">
-                Shelf <span class="font-inline">󰟃</span> north
-              </p>
-              <p id="font-inline-body">
-                Archive note <span class="font-inline">󰟃</span> was copied.
-              </p>
+            <div class="font-meta-row">
+              <label data-i18n="fontEntityLabel">HTML entity</label>
+              <code id="font-entity">&#xF1987;</code>
             </div>
-            <pre class="font-snippet"><code id="font-html-snippet">&lt;span class="cistercian"&gt;&amp;#xF07C3;&lt;/span&gt;
+            <div class="font-meta-row">
+              <label data-i18n="fontCssLabel">CSS</label>
+              <code>.cistercian { font-family: "Cistercian"; }</code>
+            </div>
+          </div>
+        </div>
+        <div class="font-inline-preview">
+          <p id="font-inline-short">
+            Shelf <span class="font-inline">󰟃</span> north
+          </p>
+          <p id="font-inline-body">
+            Archive note <span class="font-inline">󰟃</span> was copied.
+          </p>
+        </div>
+        <pre class="font-snippet"><code id="font-html-snippet">&lt;span class="cistercian"&gt;&amp;#xF07C3;&lt;/span&gt;
 
 &lt;p&gt;Shelf &lt;span class="cistercian"&gt;&amp;#xF07C3;&lt;/span&gt; north&lt;/p&gt;
 &lt;p&gt;Archive note &lt;span class="cistercian"&gt;&amp;#xF07C3;&lt;/span&gt; was copied.&lt;/p&gt;</code></pre>
-          </section>
-        </div>
       </section>
     </main>
 
@@ -534,7 +551,7 @@
           normalizedLabel: "Normalized",
           examplesTitle: "サンプル",
           fontTitle: "Font Demo",
-          fontLead: "build:font 後は、同じ値を 1 glyph として font でも使えます。",
+          fontLead: "同じ数字を Web フォントの 1 文字としても使えます。テキストに混ぜて表示できます。",
           fontCodepointLabel: "Codepoint",
           fontEntityLabel: "HTML entity",
           fontCssLabel: "CSS",
@@ -552,7 +569,7 @@
           normalizedLabel: "Normalized",
           examplesTitle: "Samples",
           fontTitle: "Font demo",
-          fontLead: "After build:font, the same value is also available as one font glyph.",
+          fontLead: "The same numeral is also available as a single web font glyph you can mix into text.",
           fontCodepointLabel: "Codepoint",
           fontEntityLabel: "HTML entity",
           fontCssLabel: "CSS",
@@ -568,7 +585,7 @@
       const fontHtmlSnippet = document.getElementById("font-html-snippet");
 
       function valueToCodepoint(value) {
-        return 0xf0000 + Number.parseInt(value, 10);
+        return 0xf0000 + Number.parseInt(String(value).padStart(4, "0"), 16);
       }
 
       function formatCodepoint(codepoint) {

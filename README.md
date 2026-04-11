@@ -50,14 +50,14 @@ npm run build:font
 - `dist/font/manifest.json`
 - `dist/font/demo.html`
 
-`manifest.json` には `1987 -> U+...` の対応表が入ります。HTML ではアラビア数字の `"1987"` にそのまま font を当てるのではなく、対応するコードポイント文字を出して `font-family` を適用します。
+コードポイントは `U+F` + 4桁の値です。例えば `1987` → `U+F1987`、`0042` → `U+F0042` のように、値がそのまま hex に現れます。
 
 ```html
 <link rel="stylesheet" href="/fonts/Cistercian.css" />
-<span class="cistercian">&#xF07C3;</span>
+<span class="cistercian">&#xF1987;</span>
 ```
 
-値ごとのコードポイントは `dist/font/manifest.json` を参照してください。
+全値の対応表は `dist/font/manifest.json` を参照してください。
 
 ## Deploy
 

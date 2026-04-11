@@ -18,7 +18,7 @@ const finished = promisify(require("node:stream").finished);
 const FONT_NAME = "Cistercian";
 const DIST_DIR = path.resolve(__dirname, "..", "dist", "font");
 const SVG_DIR = path.join(DIST_DIR, "glyphs");
-const START_CODEPOINT = 0xf0000;
+const PUA_PREFIX = 0xf0000;
 const FONT_ASCENT = 1000;
 const FONT_DESCENT = 0;
 const GLYPH_MARGIN = 96;
@@ -252,7 +252,7 @@ async function main() {
   for (let value = 0; value <= 9999; value += 1) {
     const svg = buildGlyphSvg(value);
     const name = `cistercian-${String(value).padStart(4, "0")}`;
-    const codepoint = START_CODEPOINT + value;
+    const codepoint = PUA_PREFIX + Number.parseInt(String(value).padStart(4, "0"), 16);
     fs.writeFileSync(path.join(SVG_DIR, `${name}.svg`), svg);
     glyphs.push({ value: String(value), name, codepoint, svg });
   }
